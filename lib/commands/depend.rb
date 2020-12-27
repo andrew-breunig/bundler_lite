@@ -17,6 +17,12 @@ class Depend
       puts "#{cycle} depends on #{package}, ignoring command"
     else
       graph.add_dependencies(package, dependencies)
+      install_dependencies(graph, package) if graph.installed?(package)
     end
+  end
+
+  def install_dependencies(graph, package)
+    installed = graph.install_packages(package)
+    puts "#{package} is currently installed, installed #{installed.join(', ')}" if installed
   end
 end
