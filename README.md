@@ -43,7 +43,7 @@ Or run all tests by executing the file at `./bin/test_bundler_lite.rb`:
 
 ### TODO
 
-`Package#dependencies`
-* Smell: `Package` class stores references to packages in `@dependencies` list as instances of `String`
-* Concern: Context-depdendent representation of packages produces tight coupling between `Graph`, `Mutations`, and `Package` classes
+`Graph#package`
+* Smell: `Package` class stores references to other packages in `@dependencies` list as instances of `String`, not `Package`
+* Concern: Context-depdendent representation of packages produces tight coupling between classes in `lib/packages`
 * TODO: Investigate alternative data structures for modeling dependency relationships
