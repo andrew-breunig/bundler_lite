@@ -43,13 +43,13 @@ class TestPackage < Test::Unit::TestCase
 
   def test_installed_after_install
     package = Package.new('A')
-    package.install('A')
+    package.install(installed_directly: true)
     assert_equal(true, package.installed?)
   end
 
   def test_installed_after_remove
     package = Package.new('A')
-    package.install('A')
+    package.install(installed_directly: true)
     package.remove
     assert_equal(false, package.installed?)
   end
@@ -61,19 +61,19 @@ class TestPackage < Test::Unit::TestCase
 
   def test_installed_directly_after_installed_by_self
     package = Package.new('A')
-    package.install('A')
+    package.install(installed_directly: true)
     assert_equal(true, package.installed_directly?)
   end
 
   def test_installed_directly_after_installed_by_other
     package = Package.new('A')
-    package.install('B')
+    package.install(installed_directly: false)
     assert_equal(false, package.installed_directly?)
   end
 
   def test_installed_directly_after_remove
     package = Package.new('A')
-    package.install('A')
+    package.install(installed_directly: true)
     package.remove
     assert_equal(false, package.installed_directly?)
   end

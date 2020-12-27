@@ -16,9 +16,9 @@ class Package
     @dependencies |= dependencies
   end
 
-  def install(installer)
+  def install(installed_directly:)
     @installed = true
-    @installed_directly = true if installer == name
+    @installed_directly = installed_directly
   end
 
   def remove

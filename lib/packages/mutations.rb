@@ -12,7 +12,7 @@ class Mutations
   end
 
   def install_package(package, installer, installed)
-    package.install(installer)
+    package.install(installed_directly: package.name == installer)
     installed.append(package.name)
   end
 
