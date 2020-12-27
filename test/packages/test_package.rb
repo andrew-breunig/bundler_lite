@@ -4,9 +4,8 @@ require 'test/unit'
 require_relative '../../lib/packages/package'
 
 class TestPackage < Test::Unit::TestCase
-  def test_name_default_is_unknown
-    package = Package.new
-    assert_equal('Unknown Package', package.name)
+  def test_initialize_raises_if_name_is_not_provided
+    assert_raise(Package::MissingNameError) { Package.new }
   end
 
   def test_name_set_on_initialization

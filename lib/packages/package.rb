@@ -5,7 +5,11 @@ class Package
   alias installed? installed
   alias installed_directly? installed_directly
 
-  def initialize(name = 'Unknown Package', dependencies = [])
+  class MissingNameError < StandardError; end
+
+  def initialize(name = nil, dependencies = [])
+    raise MissingNameError, 'Package name is required' if name.nil?
+
     @name = name
     @dependencies = dependencies
     @installed = false

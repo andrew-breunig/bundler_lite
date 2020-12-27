@@ -12,57 +12,62 @@ class TestMutations < Test::Unit::TestCase
     assert_equal('A', packages.first.name)
   end
 
-  def test_create_package_returns_package_name
+  def test_create_package_returns_package
     packages = []
     mutations = Mutations.new
-    package = mutations.create_package(packages, 'A')
-    assert_equal(package.name, packages.first.name)
+    assert_equal('A', mutations.create_package(packages, 'A').name)
   end
 
-  def test_add_dependencies_adds_dependencies
+  def test_add_dependencies_forwards_to_package
     mutations = Mutations.new
-    package = Package.new
+    package = Package.new('A')
     mutations.add_dependencies(package, %w[B])
-    assert_equal(['B'], package.dependencies)
+    assert_equal(%w[B], package.dependencies)
   end
 
-  def test_add_dependencies_adds_only_new_dependencies
+  def test_install_package_forwards_to_package
     mutations = Mutations.new
-    package = Package.new
-    mutations.add_dependencies(package, %w[B C])
-    mutations.add_dependencies(package, ['B'])
-    assert_equal(%w[B C], package.dependencies)
-  end
-
-  def test_install_package_installs_package
-    mutations = Mutations.new
-    package = Package.new
-    mutations.install_package(package, package.name, [])
+    package = Package.new('A')
+    mutations.install_package(package, 'A', [])
     assert_equal(true, package.installed?)
+  end
+
+  def test_install_package_indicates_installed_directly_when_installer_is_self
+    mutations = Mutations.new
+    package = Package.new('A')
+    mutations.install_package(package, 'A', [])
+    assert_equal(true, package.installed_directly?)
+  end
+
+  def test_install_package_indicates_not_installed_directly_when_installer_is_other
+    mutations = Mutations.new
+    package = Package.new('A')
+    mutations.install_package(package, 'B', [])
+    assert_equal(false, package.installed_directly?)
   end
 
   def test_install_package_appends_package_name_to_installed_packages
     mutations = Mutations.new
-    package = Package.new
+    package = Package.new('A')
     installed_packages = []
-    mutations.install_package(package, package.name, installed_packages)
-    assert_equal([package.name], installed_packages)
+    mutations.install_package(package, 'A', installed_packages)
+    assert_equal(%w[A], installed_packages)
   end
 
-  def test_remove_package_removes_package
+  def test_remove_package_forwards_to_package
     mutations = Mutations.new
-    package = Package.new
-    mutations.install_package(package, package.name, [])
+    package = Package.new('A')
+    mutations.install_package(package, 'A', [])
     mutations.remove_package(package, [])
     assert_equal(false, package.installed?)
   end
 
   def test_remove_package_appends_package_name_to_removed_packages
     mutations = Mutations.new
-    package = Package.new
+    package = Package.new('A')
     removed_packages = []
-    mutations.install_package(package, package.name, [])
+    mutations.install_package(package, 'A', [])
     mutations.remove_package(package, removed_packages)
-    assert_equal([package.name], removed_packages)
+    assert_equal(%w[A], removed_packages)
   end
 end
