@@ -43,11 +43,6 @@ Or run all tests by executing the file at `./bin/test_bundler_lite.rb`:
 
 ### TODO
 
-`Driver#process_input`
-* Smell: `Driver` class currently relies on a `@current_command` instance variable
-* Concern: Introduces state management responsbilities that may be unnecessary
-* TODO: Investigate possibility of yielding a method variable to, modifying withing, and returning from a block
-
 `Package#dependencies`
 * Smell: `Package` class stores references to packages in `@dependencies` list as instances of `String`
 * Concern: Context-depdendent representation of packages produces tight coupling between `Graph`, `Mutations`, and `Package` classes
