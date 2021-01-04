@@ -2,31 +2,57 @@
 
 ### Description
 
-Conceptual implementation of the dependency graphing components of a typical package manager; ignores versioning concerns for simplicity.
+Conceptual implementation of the dependency graphing components of a typical package manager.
+
+Ignores versioning concerns for simplicity.
 
 ### Usage
 
 To run this program from the console, execute the file at `./bin/bundler_lite.rb`:
 
-`$ chmod u+x ./bin/bundler_lite.rb`
-`$ ./bin/bundler_lite.rb`
+```
+$ chmod u+x ./bin/bundler_lite.rb
+$ ./bin/bundler_lite.rb
+```
 
-The first line of input must specify the length of the expected instruction set:
+First line of input must specify the length of the expected instruction set:
 
-* `"10\n"` _Indicates a set of 10 instructions._
+```
+$ 10
+# Indicates a set of 10 instructions.
+```
 
-Subsequent lines may specify commands for managing dependencies:
+Subsequent lines of input may specify commands for managing dependencies:
 
-* `DEPEND A B C` _Adds packages `B` and `C` as dependencies of package `A`, provided the relationships are acyclic._
-* `INSTALL A` _Installs package `A` and its uninstalled dependencies._
-* `REMOVE A` _Removes package `A` if it is not required by another packages, and its non-required dependencies._
-* `LIST` _Lists currently installed packages._
+```
+$ DEPEND A B C
+# Adds packages B and C as dependencies of package A, provided their relationships are acyclic.
+# If package A is currently installed, installs new dependencies.
+```
 
-Exit the program by entering the termination command:
+```
+$ INSTALL A
+# Installs package A and its uninstalled dependencies.
+```
 
-* `END` _Terminates the program._
+```
+$ REMOVE A
+# Removes package A and any dependencies which are not required by another installation.
+```
 
-Note that input which exceeds the specified length or does not resolve to an appropriate command above will terminate the program.
+```
+$ LIST
+# Lists currently installed packages, sorted alphabetically.
+```
+
+Final line of input exits the program by entering the termination command:
+
+```
+$ END
+# Terminates the program.
+```
+
+Note that input which exceeds the specified length or does not resolve to one of the supported commands above will terminate the program.
 
 ### Testing
 
@@ -34,16 +60,20 @@ Tests are written for the `test-unit` framework packaged with the Ruby standard 
 
 Run individual test suites by executing their containing file:
 
-`$ ruby ./test/commands/test_command.rb`
+```
+$ ruby ./test/commands/test_command.rb
+```
 
 Or run all tests by executing the file at `./bin/test_bundler_lite.rb`:
 
-`$ chmod u+x ./bin/test_bundler_lite.rb`
-`$ ./bin/test_bundler_lite.rb`
+```
+$ chmod u+x ./bin/test_bundler_lite.rb
+$ ./bin/test_bundler_lite.rb
+```
 
 ### TODO
 
 `Graph#package`
-* Smell: `Package` class stores references to other packages in `@dependencies` list as instances of `String`, not `Package`
-* Concern: Context-depdendent representation of packages produces tight coupling between classes in `lib/packages`
-* TODO: Investigate alternative data structures for modeling dependency relationships
+* Smell: `Package` class stores references to other packages in `@dependencies` as instances of `String`, not of `Package`
+* Concern: Divergent representation of packages creates tight coupling between classes in `lib/packages/`
+* TODO: Investigate alternative data structures to model one-to-many dependency relationships
